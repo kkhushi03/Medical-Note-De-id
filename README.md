@@ -1,15 +1,15 @@
----
-title: Medical Note Deidentification
-emoji: 🐠
-colorFrom: pink
-colorTo: blue
-sdk: gradio
-sdk_version: 3.12.0
-app_file: app.py
-pinned: false
-license: mit
----
+# 🩺 Medical Note De-Identification using Transformer Models
 
-# Configuration
+- This project focuses on the automatic de-identification of sensitive medical information from clinical notes using transformer-based NLP models like ClinicalBERT and RoBERTa. The goal is to ensure privacy by removing Protected Health Information (PHI) from electronic health records while maintaining the medical context.
 
-See [doc](https://hf.co/docs/hub/spaces) for more info on supported versions.
+## 🚀 Features
+
+- 🔐 Automatically detects and masks PHI (e.g., patient names, dates, locations)
+
+- 🤖 Uses domain-specific models like ClinicalBERT for higher accuracy in medical contexts
+
+- 🧠 Built using Hugging Face Transformers
+
+- 🧪 Supports inference on both local environments and Hugging Face Spaces
+
+- 📊 Streamlit-based interactive UI for demo and testing
