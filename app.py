@@ -9,6 +9,11 @@ from transformers import (
     TrainingArguments,
     HfArgumentParser,
 )
+try:
+    from pycorenlp import StanfordCoreNLP
+    print("pycorenlp imported successfully")
+except ModuleNotFoundError as e:
+    print(f"Import failed: {e}")
 
 from robust_deid.ner_datasets import DatasetCreator
 from robust_deid.sequence_tagging import SequenceTagger
@@ -262,13 +267,14 @@ gradio_text_output = gr.outputs.Textbox(
 examples = [["Physician Discharge Summary Admit date: 10/12/1982 Discharge date: 10/22/1982 Patient Information Jack Reacher, 54 y.o. male (DOB = 1/21/1928). Home Address: 123 Park Drive, San Diego, CA, 03245. Home Phone: 202-555-0199 (home). Hospital Care Team Service: Orthopedics Inpatient Attending: Roger C Kelly, MD Attending phys phone: (634)743-5135 Discharge Unit: HCS843 Primary Care Physician: Hassan V Kim, MD 512-832-5025.", "OBI-RoBERTa De-ID", "No threshold"], ["Consult NotePt: Ulysses Ogrady MC #0937884Date: 07/01/19 Williams Ct M OSCAR, JOHNNY Hyderabad, WI 62297\n\nHISTORY OF PRESENT ILLNESS: The patient is a 77-year-old-woman with long standing hypertension who presented as a Walk-in to me at the Brigham Health Center on Friday. Recently had been started q.o.d. on Clonidine since 01/15/19 to taper off of the drug. Was told to start Zestril 20 mg. q.d. again. The patient was sent to the Unit for direct admission for cardioversion and anticoagulation, with the Cardiologist, Dr. Wilson to follow.\nSOCIAL HISTORY: Lives alone, has one daughter living in Nantucket. Is a non-smoker, and does not drink alcohol.\nHOSPITAL COURSE AND TREATMENT: During admission, the patient was seen by Cardiology, Dr. Wilson, was started on IV Heparin, Sotalol 40 mg PO b.i.d. increased to 80 mg b.i.d., and had an echocardiogram. By 07-22-19 the patient had better rate control and blood pressure control but remained in atrial fibrillation. On 08.03.19, the patient was felt to be medically stable.", "OBI-RoBERTa De-ID", "99.5"], ["Consult NotePt: Ulysses Ogrady MC #0937884Date: 07/01/19 Williams Ct M OSCAR, JOHNNY Hyderabad, WI 62297\n\nHISTORY OF PRESENT ILLNESS: The patient is a 77-year-old-woman with long standing hypertension who presented as a Walk-in to me at the Brigham Health Center on Friday. Recently had been started q.o.d. on Clonidine since 01/15/19 to taper off of the drug. Was told to start Zestril 20 mg. q.d. again. The patient was sent to the Unit for direct admission for cardioversion and anticoagulation, with the Cardiologist, Dr. Wilson to follow.\nSOCIAL HISTORY: Lives alone, has one daughter living in Nantucket. Is a non-smoker, and does not drink alcohol.\nHOSPITAL COURSE AND TREATMENT: During admission, the patient was seen by Cardiology, Dr. Wilson, was started on IV Heparin, Sotalol 40 mg PO b.i.d. increased to 80 mg b.i.d., and had an echocardiogram. By 07-22-19 the patient had better rate control and blood pressure control but remained in atrial fibrillation. On 08.03.19, the patient was felt to be medically stable.", "OBI-ClinicalBERT De-ID", "99.5"], ['HPI: Pt is a 59 yo Khazakhstani male, with who was admitted to San Rafael Mount Hospital following a syncopal nauseas and was brought to Rafael Mount ED. Five weeks ago prior Anemia: On admission to Rafael Hospital, Hb/Hct: 11.6/35.5. Tobacco: Quit at 38 y/o; ETOH: 1-2 beers/week; Caffeine:\nDD:05/05/2022 DT:05/05/2022 WK:65255 :4653\nNO GROWTH TO DATE Specimen: 38:Z8912708G Collected\n\n2nd set biomarkers (WPH): Creatine Kinase Isoenzymes Hospitalized 2115 TCH for ROMI 2120 TCH new onset\n\nLab Tests Amador: the lab results show good levels of 10MG PO qd : 04/10/2021 - 05/15/2021 ACT : rosenberg 128\n placed 3/22 for bradycardia. P/G model #5435, serial # 4712198. \n\nSocial history: Married, glazier, 3 grown adult children. Has VNA. Former civil engineer, supervisor, consultant. She is looking forward to a good Christmas. She is here today',
  "OBI-ClinicalBERT De-ID", 'No threshold']]
 
-app = gr.Interface( #might have to change this later 
+iface = gr.Interface(
+    title=title,
+    description=description,
+    theme='huggingface',
+    layout='horizontal',
+    examples=examples,
     fn=deid,
     inputs=[gradio_input, model_radio_input, recall_radio_input],
-    outputs=[gradio_output],
-    title=title,
-    description=description
+    outputs=[gradio_highlight_output, gradio_text_output],
 )
-
-if __name__ == "__main__":
-    app.launch() 
+iface.launch()
