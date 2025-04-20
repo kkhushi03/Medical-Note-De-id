@@ -13,3 +13,6 @@
 - 🧪 Supports inference on both local environments and Hugging Face Spaces
 
 - 📊 Streamlit-based interactive UI for demo and testing
+
+
+Checkout the HuggingFace version: https://huggingface.co/spaces/kkhushisaid/Health_Records_DI
